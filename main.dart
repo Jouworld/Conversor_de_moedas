@@ -18,7 +18,7 @@ void main() async {
           enabledBorder:
           OutlineInputBorder(borderSide: BorderSide(color: Color(0xff8A2BE2))),
           focusedBorder:
-          OutlineInputBorder(borderSide: BorderSide(color: Color(0xff8A2BE2))),
+          OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           hintStyle: TextStyle(color: Color(0xff8A2BE2)),
         )),
     debugShowCheckedModeBanner: false,
@@ -41,7 +41,78 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-    double dolar, euro;
+
+  TextEditingController reaisController = TextEditingController(); //controlador para o recebimento do valor de reais
+  TextEditingController dolarController = TextEditingController(); //controlador para o recebimento do valor de dolares
+  TextEditingController euroController = TextEditingController(); //controlador para o recebimento do valor de euros
+  TextEditingController libraeController = TextEditingController(); //controlador para o recebimento do valor de libras esterlina
+  TextEditingController pesoController = TextEditingController(); //controlador para o recebimento do valor de pesos
+  TextEditingController bitcoinController = TextEditingController(); //controlador para o recebimento do valor de bitcoins
+
+    double dolar, euro, librae, peso, bitcoin;
+
+    void _realChanged(String text){
+
+        double real = double.parse(text); // tranformando o valor puxado em um double
+        dolarController.text = (real/dolar).toStringAsFixed(2); // tranformando o resultado em uma string e mostrar apenas 2 casas decimais
+        euroController.text = (real/euro).toStringAsFixed(2);
+        libraeController.text = (real/librae).toStringAsFixed(2);
+        pesoController.text = (real*peso).toStringAsFixed(2);
+        bitcoinController.text = (real/bitcoin).toStringAsFixed(2);
+
+
+    }
+  void _dolarChanged(String text){
+
+    double dolar = double.parse(text);
+    reaisController.text = (dolar * this.dolar).toStringAsFixed(2); //pegando o valor digitado e multiplicando pelo valor do dolar o resulta será em reais
+    euroController.text = (dolar * this.dolar /euro).toStringAsFixed(2);
+    libraeController.text = (dolar * this.dolar /librae).toStringAsFixed(2);
+    pesoController.text = (dolar * this.dolar / peso).toStringAsFixed(2);
+    bitcoinController.text = (dolar * this.dolar /bitcoin).toStringAsFixed(2);
+  }
+  void _euroChanged(String text){
+
+    double euro = double.parse(text);
+    reaisController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro/dolar).toStringAsFixed(2);
+    libraeController.text = (euro * this.euro /librae).toStringAsFixed(2);
+    pesoController.text = (euro * this.euro /peso).toStringAsFixed(2);
+    bitcoinController.text = (euro * this.euro /bitcoin).toStringAsFixed(2);
+
+  }
+  void _libraeChanged(String text){
+
+    double librae = double.parse(text);
+    reaisController.text = (librae * this.librae).toStringAsFixed(2);
+    dolarController.text = (librae * this.librae/dolar).toStringAsFixed(2);
+    euroController.text = (librae * this.librae/euro).toStringAsFixed(2);
+    pesoController.text = (librae * this.librae/peso).toStringAsFixed(2);
+    bitcoinController.text = (librae * this.librae/bitcoin).toStringAsFixed(2);
+
+  }
+  void _pesoChanged(String text){
+
+    double peso = double.parse(text);
+    reaisController.text = (peso * this.peso).toStringAsFixed(2);
+    dolarController.text = (peso * this.peso*dolar).toStringAsFixed(2);
+    euroController.text = (peso * this.peso*euro).toStringAsFixed(2);
+    libraeController.text = (peso * this.peso*librae).toStringAsFixed(2);
+    bitcoinController.text = (peso * this.peso*bitcoin).toStringAsFixed(2);
+
+  }
+  void _bitcoinChanged(String text){
+
+    double bitcoin = double.parse(text);
+    reaisController.text = (bitcoin * this.bitcoin).toStringAsFixed(2);
+    dolarController.text = (bitcoin * this.bitcoin/dolar).toStringAsFixed(2);
+    euroController.text = (bitcoin * this.bitcoin/euro).toStringAsFixed(2);
+    libraeController.text = (bitcoin * this.bitcoin/librae).toStringAsFixed(2);
+    pesoController.text = (bitcoin * this.bitcoin/peso).toStringAsFixed(2);
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,54 +146,42 @@ class _HomeState extends State<Home> {
                 } else {
                   dolar = snapshot.data["results"]["currencies"]["USD"]["buy"];
                   euro = snapshot.data["results"]["currencies"]["EUR"]["buy"];
+                  librae = snapshot.data["results"]["currencies"]["GBP"]["buy"];
+                  peso = snapshot.data["results"]["currencies"]["ARS"]["buy"];
+                  bitcoin = snapshot.data["results"]["currencies"]["BTC"]["buy"];
                   return SingleChildScrollView(
                     padding: EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         SizedBox(
-                            height: 40.0
+                            height: 30.0
                         ), //Posso usar o Divider(), po´rem o espaçamennto é pequeno
                         Icon(Icons.monetization_on, size: 150.0, color: Color(0xffFFD700),),
                         SizedBox(
-                            height: 40.0
+                            height: 30.0
                         ),
-                        TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Reais",
-                            labelStyle: TextStyle(color:Color(0xff8A2BE2) ),
-                            border: OutlineInputBorder(),
-                            prefixText: "R\$ "
-                          ),
-                          style: TextStyle( color: Color(0xff8A2BE2) ),
-                        ),
+                        buildTextField("Reais", "R\$ ", reaisController, _realChanged),
                         SizedBox(
                           height: 20.0
                         ),
-                        TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                              labelText: "Dolar",
-                              labelStyle: TextStyle(color:Color(0xff8A2BE2) ),
-                              border: OutlineInputBorder(),
-                              prefixText: "US\$ "
-                          ),
-                          style: TextStyle( color: Color(0xff8A2BE2) ),
-                        ),
+                        buildTextField("Dolar", "\$ ", dolarController,_dolarChanged),
                         SizedBox(
                             height: 20.0
                         ),
-                        TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                              labelText: "Euro",
-                              labelStyle: TextStyle(color:Color(0xff8A2BE2) ),
-                              border: OutlineInputBorder(),
-                              prefixText: "€"
-                          ),
-                          style: TextStyle( color: Color(0xff8A2BE2) ),
-                        )
+                        buildTextField("Euro", "€ ", euroController, _euroChanged),
+                        SizedBox(
+                            height: 20.0
+                        ),
+                        buildTextField("Libra Esterlina", "£ ", libraeController, _libraeChanged),
+                        SizedBox(
+                            height: 20.0
+                        ),
+                        buildTextField("Peso Argentino", "R\$ ", pesoController, _pesoChanged),
+                        SizedBox(
+                            height: 20.0
+                        ),
+                        buildTextField("BitCoin", "₿ ", bitcoinController, _bitcoinChanged),
                       ],
                     )
                   );
@@ -133,3 +192,23 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+Widget buildTextField( String label, prefix, TextEditingController c, Function f){
+
+  return TextField(
+    controller: c,
+    keyboardType: TextInputType.number,
+    decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color:Color(0xff8A2BE2) ),
+        border: OutlineInputBorder(),
+        prefixText: prefix,
+    ),
+    style: TextStyle( color: Color(0xff8A2BE2) ),
+    onChanged: f,
+  );
+
+
+
+}
+
