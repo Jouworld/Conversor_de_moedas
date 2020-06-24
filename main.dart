@@ -52,6 +52,10 @@ class _HomeState extends State<Home> {
     double dolar, euro, librae, peso, bitcoin;
 
     void _realChanged(String text){
+      if(text.isEmpty) { // A condicional irá verificar se o campo está vazio e ser for o caso chamará a função que irá limpar o campo
+        _clearAll();
+        return;
+      }
 
         double real = double.parse(text); // tranformando o valor puxado em um double
         dolarController.text = (real/dolar).toStringAsFixed(2); // tranformando o resultado em uma string e mostrar apenas 2 casas decimais
@@ -64,6 +68,11 @@ class _HomeState extends State<Home> {
     }
   void _dolarChanged(String text){
 
+    if(text.isEmpty) { // A condicional irá verificar se o campo está vazio e ser for o caso chamará a função que irá limpar o campo
+      _clearAll();
+      return;
+    }
+
     double dolar = double.parse(text);
     reaisController.text = (dolar * this.dolar).toStringAsFixed(2); //pegando o valor digitado e multiplicando pelo valor do dolar o resulta será em reais
     euroController.text = (dolar * this.dolar /euro).toStringAsFixed(2);
@@ -72,6 +81,11 @@ class _HomeState extends State<Home> {
     bitcoinController.text = (dolar * this.dolar /bitcoin).toStringAsFixed(2);
   }
   void _euroChanged(String text){
+
+    if(text.isEmpty) { // A condicional irá verificar se o campo está vazio e ser for o caso chamará a função que irá limpar o campo
+      _clearAll();
+      return;
+    }
 
     double euro = double.parse(text);
     reaisController.text = (euro * this.euro).toStringAsFixed(2);
@@ -83,6 +97,11 @@ class _HomeState extends State<Home> {
   }
   void _libraeChanged(String text){
 
+    if(text.isEmpty) { // A condicional irá verificar se o campo está vazio e ser for o caso chamará a função que irá limpar o campo
+      _clearAll();
+      return;
+    }
+
     double librae = double.parse(text);
     reaisController.text = (librae * this.librae).toStringAsFixed(2);
     dolarController.text = (librae * this.librae/dolar).toStringAsFixed(2);
@@ -92,6 +111,11 @@ class _HomeState extends State<Home> {
 
   }
   void _pesoChanged(String text){
+
+    if(text.isEmpty) { // A condicional irá verificar se o campo está vazio e ser for o caso chamará a função que irá limpar o campo
+      _clearAll();
+      return;
+    }
 
     double peso = double.parse(text);
     reaisController.text = (peso * this.peso).toStringAsFixed(2);
@@ -103,6 +127,11 @@ class _HomeState extends State<Home> {
   }
   void _bitcoinChanged(String text){
 
+    if(text.isEmpty) { // A condicional irá verificar se o campo está vazio e ser for o caso chamará a função que irá limpar o campo
+      _clearAll();
+      return;
+    }
+
     double bitcoin = double.parse(text);
     reaisController.text = (bitcoin * this.bitcoin).toStringAsFixed(2);
     dolarController.text = (bitcoin * this.bitcoin/dolar).toStringAsFixed(2);
@@ -110,6 +139,15 @@ class _HomeState extends State<Home> {
     libraeController.text = (bitcoin * this.bitcoin/librae).toStringAsFixed(2);
     pesoController.text = (bitcoin * this.bitcoin/peso).toStringAsFixed(2);
 
+  }
+  
+  void _clearAll(){ // função para limpar os campos
+      reaisController.text = "";
+      dolarController.text = "";
+      euroController.text = "";
+      libraeController.text = "";
+      pesoController.text = "";
+      bitcoinController.text = "";
   }
 
 
